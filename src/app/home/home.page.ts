@@ -43,7 +43,7 @@ export class HomePage {
   
   async editIdazle(idazle: any) {
     const alert = await this.alertController.create({
-      header: 'Editar Idazle',
+      header: 'Editatu Idazlea',
       inputs: [
         {
           name: 'first_name',
@@ -73,7 +73,7 @@ export class HomePage {
           },
         },
         {
-          text: 'Guardar',
+          text: 'Gorde',
           handler: (data) => {
             // Actualizar los datos del idazle
             idazle.first_name = data.first_name;
