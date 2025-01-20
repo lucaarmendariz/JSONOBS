@@ -9,7 +9,6 @@ import { AlertController } from '@ionic/angular';
   standalone: false,
 })
 export class HomePage {
-
   dataArray = [
     {
       id: 1,
@@ -18,68 +17,70 @@ export class HomePage {
       email: 'michael.lawson@reqres.in',
       avatar: 'https://reqres.in/img/faces/7-image.jpg',
     },
-    // Agrega más elementos según sea necesario
+    // Beste elementu batzuk gehitu ditzakezu behar izanez gero
   ];
 
   constructor(private dataService: DataService, private alertController: AlertController) {}
 
   ngOnInit() {
-    // Llamar al servicio para obtener los datos
+    // Zerbitzuari deitu datuak lortzeko osagaia inicializatzean
     this.dataService.getData().subscribe(
       (data) => {
-        this.dataArray = data.data; // Rellenar el array con los datos del JSON
-        console.log('Datos cargados:', this.dataArray);
+        this.dataArray = data.data; // JSON-etik datuak arrayan bete
+        console.log('Datuak kargatuta:', this.dataArray);
       },
       (error) => {
-        console.error('Error al cargar los datos:', error);
+        console.error('Errorea datuak kargatzean:', error);
       }
     );
   }
 
+  // Idazle bat gehitzeko metodoa (oraindik guztiz inplementatu gabe)
   addIdazle() {
-    console.log('Añadir idazle');
-    // Lógica para añadir un idazle (por ejemplo, abrir un modal o formulario)
+    console.log('Idazlea gehitu');
+    // Hemen modal edo formulario bat ireki dezakezu idazle berri bat gehitzeko
   }
-  
+
+  // Idazle bat editatzeko metodoa
   async editIdazle(idazle: any) {
     const alert = await this.alertController.create({
-      header: 'Editatu Idazlea',
+      header: 'Idazlea editatu',
       inputs: [
         {
           name: 'first_name',
           type: 'text',
           value: idazle.first_name,
-          placeholder: 'Nombre',
+          placeholder: 'Izena',
         },
         {
           name: 'last_name',
           type: 'text',
           value: idazle.last_name,
-          placeholder: 'Apellido',
+          placeholder: 'Abizena',
         },
         {
           name: 'email',
           type: 'email',
           value: idazle.email,
-          placeholder: 'Correo Electrónico',
+          placeholder: 'Posta Elektronikoa',
         },
       ],
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Utzi',
           role: 'cancel',
           handler: () => {
-            console.log('Edición cancelada');
+            console.log('Edizioa bertan behera utzi da');
           },
         },
         {
           text: 'Gorde',
           handler: (data) => {
-            // Actualizar los datos del idazle
+            // Idazlearen datuak formularioaren balio berriekin eguneratu
             idazle.first_name = data.first_name;
             idazle.last_name = data.last_name;
             idazle.email = data.email;
-            console.log('Idazle actualizado:', idazle);
+            console.log('Idazlea eguneratua:', idazle);
           },
         },
       ],
@@ -87,10 +88,36 @@ export class HomePage {
 
     await alert.present();
   }
-  
-  deleteIdazle(id: number) {
-    console.log('Eliminar idazle con ID:', id);
-    // Lógica para eliminar un idazle (por ejemplo, eliminar del array y actualizar la vista)
+
+  // Idazle bat ezabatzeko metodoa baieztapenarekin
+  async deleteIdazle(id: number) {
+    const alert = await this.alertController.create({
+      header: 'Ezabapena baieztatu',
+      message: 'Ziur zaude idazle hau ezabatu nahi duzula?',
+      buttons: [
+        {
+          text: 'Utzi',
+          role: 'cancel',
+          handler: () => {
+            console.log('Ezabaketa bertan behera utzi da');
+          },
+        },
+        {
+          text: 'Ezabatu',
+          role: 'destructive',
+          handler: () => {
+            this.confirmDelete(id);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
-  
+
+  // Ezabaketa baieztatu
+  confirmDelete(id: number) {
+    this.dataArray = this.dataArray.filter((item) => item.id !== id); //
+    console.log(`ID ${id} duen idazlea ezabatua`);
+  }
 }
