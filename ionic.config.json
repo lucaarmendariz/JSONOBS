@@ -1,0 +1,7 @@
+{
+  "name": "JSONOBS",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
